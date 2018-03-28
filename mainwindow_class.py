@@ -33,7 +33,7 @@ class Ui_MainWindow(Helper):
          self.reset = False
          self.uploaded = False
          self.resetCounter = 0
-         
+
          # initial HMI and OSS values        
          self.writeSwitchData = [0 for i in range(NO_BEAMS)]
          self.beamSafeData = [[0 for i in range(NO_BEAMS)] for k in range(2)]   #start in custom
@@ -126,7 +126,10 @@ class Ui_MainWindow(Helper):
          
          self.counter = 0
 
-         
+         self.fluDisabledButtonsList = []
+         self.fluEnabledButtonsList = []
+
+         self.linkEstopAllBeams = False
    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -398,6 +401,7 @@ class Ui_MainWindow(Helper):
             self.enableFluButton.setText("ENABLED")
             self.enableFluButton.setStyleSheet(STYLEWRITE)
             self.enableFluButton.clicked.connect(lambda ignore, x=position: self.enableFluButton_clicked(x))
+            self.fluEnabledButtonsList.append(self.enableFluButton)
 
             self.disableFluButton = QtWidgets.QPushButton(self.fluWidget)
             self.disableFluButton.setGeometry(QtCore.QRect(STARTING_X + 100 + position[1] * (BOX_WIDTH + 55),
@@ -406,6 +410,7 @@ class Ui_MainWindow(Helper):
             self.disableFluButton.setText("DISABLED")
             self.disableFluButton.setStyleSheet(STYLEWRITE)
             self.disableFluButton.clicked.connect(lambda ignore, x=position: self.disableFluButton_clicked(x))
+            self.fluDisabledButtonsList.append(self.disableFluButton)
 
             # draw P and S upper boxes
             self.beamBoxUpper = QtWidgets.QGroupBox(self.fluWidget)
@@ -459,7 +464,7 @@ class Ui_MainWindow(Helper):
                 self.beamLabelLower.setStyleSheet("color:#cccccc")
                 y += 2
 
-
+            self.fluButtonsColorsRefresh()
 # -------------------------------------
         # Groupbox for linking E-Stop to all beams
         self.linkEstopsGroupBox = QtWidgets.QGroupBox(self.fluWidget)
@@ -472,14 +477,15 @@ class Ui_MainWindow(Helper):
         self.enableLinkEstopAllBeamsButton.setGeometry(QtCore.QRect(35, 700 + 10 + BUTTON_VERT, 150, BUTTON_VERT))
         self.enableLinkEstopAllBeamsButton.setText("ENABLED")
         self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
-#        self.enableLinkEstopAllBeamsButton.clicked.connect(self.enableLinkEstopAllBeamsButton_clicked)
+        self.enableLinkEstopAllBeamsButton.clicked.connect(self.enableLinkEstopAllBeamsButton_clicked)
 
         self.disableLinkEstopAllBeamsButton = QtWidgets.QPushButton(self.fluWidget)
         self.disableLinkEstopAllBeamsButton.setGeometry(QtCore.QRect(500 - 150, 700 + 10 + BUTTON_VERT, 150, BUTTON_VERT))
         self.disableLinkEstopAllBeamsButton.setText("DISABLED")
         self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
-        #        self.disableLinkEstopAllBeamsButton.clicked.connect(self.disableLinkEstopAllBeamsButton_clicked)
+        self.disableLinkEstopAllBeamsButton.clicked.connect(self.disableLinkEstopAllBeamsButton_clicked)
 
+        self.linkEstopAllBeamsColorsRefresh()
 ############################## WARNING PAGE #############################
         self.warningWidget = QtWidgets.QWidget()
         self.topWidget.addWidget(self.warningWidget)

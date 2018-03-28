@@ -41,7 +41,7 @@ STYLELBCHMINOWRITE  = "background:orange; \n"    "color: #a6a6a6;\n"      "borde
 STYLEWRITE          = "background:#a6a6a6; \n"  "color: black;\n"       "border: 5px solid #a6a6a6;\n"
 STYLENOWRITE        = "background:#a6a6a6; \n"  "color: white;\n"       " border: 5px solid #a6a6a6; \n"
 STYLEWRITEDASHED    = "background:black;\n"     "color: white;\n"       "border: 1px dashed white;\n" 
-
+STYLEWHITE          = "background-color: white"
 
 STYLEFLU = ["color: white;\n" "border: 2px solid black;\n" "border-radius: 2px;\n" "background:black;\n",
              "color: black;\n" "border: 2px solid #0000ff;\n" "border-radius: 2px;\n" "background:#0000ff;\n",
