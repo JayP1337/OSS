@@ -2052,9 +2052,39 @@ class Helper(object):
 ###############################################
 
     def enableFluButton_clicked(self, position):
-        FLUCONFIG_2[position[0] + 4 * position[1]] = True
-        print FLUCONFIG_2
+        FLUCONFIG_2[2 * position[0] + position[1]] = True
+        self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
+        self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
 
     def disableFluButton_clicked(self, position):
-        FLUCONFIG_2[position[0] + 4 * position[1]] = False
-        print FLUCONFIG_2
+        FLUCONFIG_2[2* position[0] +  position[1]] = False
+        self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
+        self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
+
+
+    def fluButtonsColorsRefresh(self):
+        for flu in enumerate(self.fluEnabledButtonsList):
+            if FLUCONFIG_2[flu[0]] == True:
+                self.fluEnabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
+                self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWRITE)
+            else:
+                self.fluEnabledButtonsList[flu[0]].setStyleSheet(STYLEWRITE)
+                self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
+
+    def enableLinkEstopAllBeamsButton_clicked(self):
+        self.linkEstopAllBeams = True
+        self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
+        self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
+
+    def disableLinkEstopAllBeamsButton_clicked(self):
+        self.linkEstopAllBeams = False
+        self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
+        self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
+
+    def linkEstopAllBeamsColorsRefresh(self):
+        if self.linkEstopAllBeams:
+            self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
+            self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
+        else:
+            self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
+            self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
