@@ -1526,13 +1526,6 @@ class Ui_MainWindow(Helper):
         self.overViewButton.setStyleSheet(STYLELBCOSSWRITE)
         self.overViewButton.clicked.connect(self.overviewButton_clicked)
         self.overViewButton.hide()
-                                                    
-        
-        # self.fluConfigButton = QtWidgets.QPushButton(self.centralWidget)
-        # self.fluConfigButton.setGeometry(QtCore.QRect(HOR_RES-RIGHTBAR_RES+(RIGHTBAR_RES-90)/2, TOPBAR_RES+30+9*30+10, 90, 23))
-        # self.fluConfigButton.setText("CONFIG CHECK")
-        # self.fluConfigButton.setStyleSheet(STYLEWRITE)
-        # self.fluConfigButton.clicked.connect(self.configButton_clicked)
 
         self.fluButton = QtWidgets.QPushButton(self.centralWidget)
         self.fluButton.setGeometry(QtCore.QRect(HOR_RES-RIGHTBAR_RES+(RIGHTBAR_RES-45)/2, TOPBAR_RES+30+9*30+10+50, 50, 50))
@@ -1572,7 +1565,7 @@ class Ui_MainWindow(Helper):
         self.vesselLayout = QtWidgets.QGridLayout()
         self.vesselWidget = QtWidgets.QWidget(self.centralWidget)
         self.vesselWidget.setGeometry(QtCore.QRect(HOR_RES-RIGHTBAR_RES, TOPBAR_RES+30, RIGHTBAR_RES, 8*30))
-        
+
 
         # Nav buttons
         self.buttons = {}
@@ -1640,7 +1633,7 @@ class Ui_MainWindow(Helper):
         N = NO_BEAMS/2 #len(labelTextActive)
         
 
-        self.beamCheckLayouts = QtWidgets.QGridLayout()  
+        self.beamCheckLayouts = QtWidgets.QGridLayout()
 
         for i in range(N):   #vertical
             for j in range(4):   #horizontal
