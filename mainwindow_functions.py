@@ -2072,19 +2072,91 @@ class Helper(object):
                 self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
 
     def enableLinkEstopAllBeamsButton_clicked(self):
-        self.linkEstopAllBeams = True
+        LINK_ESTOP_ALL_BEAMS = True
+        print "Link E-Stop to all beams:", LINK_ESTOP_ALL_BEAMS
         self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
         self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
+        for line in self.overviewFluEstopAllBeamsList:
+            line.show()
+
 
     def disableLinkEstopAllBeamsButton_clicked(self):
-        self.linkEstopAllBeams = False
+        LINK_ESTOP_ALL_BEAMS = False
+        print "Link E-Stop to all beams:", LINK_ESTOP_ALL_BEAMS
         self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
         self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
+        for line in self.overviewFluEstopAllBeamsList:
+            line.hide()
 
     def linkEstopAllBeamsColorsRefresh(self):
-        if self.linkEstopAllBeams:
+        if LINK_ESTOP_ALL_BEAMS:
             self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
             self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
         else:
             self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
             self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
+
+    def linkEstopAllBeamsLinesRefresh(self):
+        for line in self.overviewFluEstopAllBeamsList:
+            if LINK_ESTOP_ALL_BEAMS:
+                line.show()
+            else:
+                line.hide()
+
+    def fluButtonsColorsRefresh(self):
+        for flu in enumerate(self.fluEnabledButtonsList):
+            if FLUCONFIG_2[flu[0]] == True:
+                self.fluEnabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
+                self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWRITE)
+            else:
+                self.fluEnabledButtonsList[flu[0]].setStyleSheet(STYLEWRITE)
+                self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
+
+    def fluLinesRefresh(self):
+        for lineGroup in enumerate(self.vesselFluLinesList):
+            if FLUCONFIG_2[lineGroup[0]] == True:
+                #LINES ON NAVIGATION BAR
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][0].show()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][1].show()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][2].show()
+                #LINES ON OVERVIEW PAGE
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][0].show()
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][1].show()
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][2].show()
+            else:
+                # LINES ON NAVIGATION BAR
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][0].hide()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][1].hide()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][2].hide()
+                # LINES ON OVERVIEW PAGE
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][0].hide()
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][1].hide()
+                self.overviewFluLinesList[lineGroup[0]][lineGroup[0]][2].hide()
+
+    def enableFluButton_clicked(self, position):
+        FLUCONFIG_2[2 * position[0] + position[1]] = True
+        # CHANGE COLOURS OF ENABLED AND DISABLED BUTTONS
+        self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
+        self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
+        # SHOW LINES ON NAVIGATION BAR
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].show()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].show()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].show()
+        # SHOW LINES ON OVERVIEW PAGE
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].show()
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].show()
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].show()
+
+    def disableFluButton_clicked(self, position):
+        FLUCONFIG_2[2* position[0] +  position[1]] = False
+        # CHANGE COLOURS OF ENABLED AND DISABLED BUTTONS
+        self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
+        self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
+        # HIDE LINES ON NAVIGATION BAR
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].hide()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].hide()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].hide()
+        # HIDE LINES ON OVERVIEW PAGE
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].hide()
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].hide()
+        self.overviewFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].hide()

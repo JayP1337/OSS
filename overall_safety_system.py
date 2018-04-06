@@ -57,7 +57,7 @@ class OverallSafetySystem:
             self.beams[i]['activeFlagData']          = [0]*19
             self.beams[i]['beamSafeData']            = 0
             self.beams[i]['driveSafeData']           = [0, 0, 0]
-        
+
 
 
 
