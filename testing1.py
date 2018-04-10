@@ -1,7 +1,8 @@
 import sys
 from PyQt5 import QtWidgets, QtCore, QtGui
 
-FLUCONFIG_2 = [False, False, False, False, False, False, False, True] # P1P2, S1S2, P3P4, S3S4, P5P6, S5S6, P7P8, S7S8
+FLUCONFIG_2 = [True, False, False, False, False, False, False, False] # P1P2, S1S2, P3P4, S3S4, P5P6, S5S6, P7P8, S7S8
+LINK_ESTOP_ALL_BEAMS = True
 
 STYLEWRITE          = "background:#a6a6a6; \n"  "color: black;\n"       "border: 5px solid #a6a6a6;\n"
 STYLEWHITE          = "background-color: white"
@@ -12,18 +13,18 @@ class Example(QtWidgets.QWidget):
         super(QtWidgets.QWidget, self).__init__()
         self.fluEnabledButtonsList = []
         self.fluDisabledButtonsList = []
-        self.linkEstopAllBeams = False
         self.vesselOneFluGroupLines = []
         self.vesselFluLinesList = []
+        self.linkEstopAllBeamsLinesList = []
         self.initUI()
 
-    # def linkEstopAllBeamsColorsRefresh(self):
-    #     if self.linkEstopAllBeams:
-    #         self.linkEstopAllBeamsEnableButton.setStyleSheet(STYLEWHITE)
-    #         self.linkEstopAllBeamsDisableButton.setStyleSheet(STYLEWRITE)
-    #     else:
-    #         self.linkEstopAllBeamsEnableButton.setStyleSheet(STYLEWRITE)
-    #         self.linkEstopAllBeamsDisableButton.setStyleSheet(STYLEWHITE)
+    def linkEstopAllBeamsColorsRefresh(self):
+        if self.STOP_ALL_BEAMS:
+            self.linkEstopAllBeamsEnableButton.setStyleSheet(STYLEWHITE)
+            self.linkEstopAllBeamsDisableButton.setStyleSheet(STYLEWRITE)
+        else:
+            self.linkEstopAllBeamsEnableButton.setStyleSheet(STYLEWRITE)
+            self.linkEstopAllBeamsDisableButton.setStyleSheet(STYLEWHITE)
 
 
     def fluButtonsColorsRefresh(self):
@@ -35,39 +36,36 @@ class Example(QtWidgets.QWidget):
                 self.fluEnabledButtonsList[flu[0]].setStyleSheet(STYLEWRITE)
                 self.fluDisabledButtonsList[flu[0]].setStyleSheet(STYLEWHITE)
 
+    def fluLinesRefresh(self):
+        for lineGroup in enumerate(self.vesselFluLinesList):
+            if FLUCONFIG_2[lineGroup[0]] == True:
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][0].show()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][1].show()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][2].show()
+            else:
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][0].hide()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][1].hide()
+                self.vesselFluLinesList[lineGroup[0]][lineGroup[0]][2].hide()
+
     def enableFluButton_clicked(self, position):
         FLUCONFIG_2[2 * position[0] + position[1]] = True
         print FLUCONFIG_2
         self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
         self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
-        self.showOrHideFluLines()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].show()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].show()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].show()
 
     def disableFluButton_clicked(self, position):
         FLUCONFIG_2[2* position[0] +  position[1]] = False
         print FLUCONFIG_2
         self.fluEnabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWRITE)
         self.fluDisabledButtonsList[2 * position[0] + position[1]].setStyleSheet(STYLEWHITE)
-        self.showOrHideFluLines()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][0].hide()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][1].hide()
+        self.vesselFluLinesList[2 * position[0] + position[1]][2 * position[0] + position[1]][2].hide()
 
-    def showOrHideFluLines(self):
-        print len(self.vesselFluLinesList)
-        print len(self.vesselOneFluGroupLines[1])
 
-        for fluLinesGroup in enumerate(self.vesselFluLinesList):
-            if FLUCONFIG_2[fluLinesGroup[0]] == True:
-
-                for lineGroup in self.vesselFluLinesList[fluLinesGroup[0]]:
-                    for line in lineGroup: line.show()
-            else:
-                for lineGroup in self.vesselFluLinesList[fluLinesGroup[0]]:
-                    for line in lineGroup: line.hide()
-
-        # if FLUCONFIG_2[0] == True:
-        #     for line in self.vesselOneFluGroupLines:
-        #         line.show()
-        # elif FLUCONFIG_2[1] == False:
-        #     for line in self.vesselOneFluGroupLines:
-        #         line.hide()
 
 
     def initUI(self):
@@ -192,17 +190,14 @@ class Example(QtWidgets.QWidget):
             self.FluLineVert = QtWidgets.QLabel(self)
             self.FluLineVert.setGeometry(QtCore.QRect(LINE_STARTING_X + position[1] * (50 + HOR_LINE_LENGTH + LINE_WIDTH), LINE_STARTING_Y + position[0]* 50, LINE_WIDTH, VERT_LINE_LENGTH))
             self.FluLineVert.setStyleSheet("background-color:#7AAFFF")
-            # self.vesselOneFluGroupLines.append(self.FluLineVert)
 
             self.FluLineHorUp = QtWidgets.QLabel(self)
             self.FluLineHorUp.setGeometry(QtCore.QRect(LINE_STARTING_X + LINE_WIDTH + position[1] * 50, LINE_STARTING_Y + position[0]* 50, HOR_LINE_LENGTH, LINE_WIDTH))
             self.FluLineHorUp.setStyleSheet("background-color:#7AAFFF")
-            # self.vesselOneFluGroupLines.append(self.FluLineHorUp)
 
             self.FluLineHorDwn = QtWidgets.QLabel(self)
             self.FluLineHorDwn.setGeometry(QtCore.QRect(LINE_STARTING_X + LINE_WIDTH + position[1] * 50, LINE_STARTING_Y + VERT_LINE_LENGTH - LINE_WIDTH + position[0]* 50, HOR_LINE_LENGTH, LINE_WIDTH))
             self.FluLineHorDwn.setStyleSheet("background-color:#7AAFFF")
-            # self.vesselOneFluGroupLines.append(self.FluLineHorDwn)
 
             self.vesselOneFluGroupLines.append([self.FluLineVert, self.FluLineHorUp, self.FluLineHorDwn])
 
@@ -213,7 +208,7 @@ class Example(QtWidgets.QWidget):
 #############
 
         self.fluButtonsColorsRefresh()
-        self.showOrHideFluLines()
+        self.fluLinesRefresh()
         self.show()
 
 if __name__ == '__main__':

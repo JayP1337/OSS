@@ -858,7 +858,6 @@ class Ui_MainWindow(Helper):
                         self.buttonsOverView[(i, j)].setFont(self.fontBiggest)
                         
                     elif j == 3 and k<8:
-                        #self.buttonsOverView[(i, j)].setText(self.safeModeText[0])
                         self.buttonsOverView[(i, j)].setPixmap(QtGui.QPixmap("images/connectionWarningBlack.PNG"))
                         self.buttonsOverView[(i, j)].setScaledContents(True)
                         self.buttonsOverView[(i, j)].setFixedSize(40,40)
@@ -882,7 +881,6 @@ class Ui_MainWindow(Helper):
 
                         
                     elif j == 6 and k>=8:
-                        #self.buttonsOverView[(i, j)].setText(self.safeModeText[0])
                         self.buttonsOverView[(i, j)].setPixmap(QtGui.QPixmap("images/connectionWarningBlack.PNG"))
                         self.buttonsOverView[(i, j)].setScaledContents(True)
                         self.buttonsOverView[(i, j)].setFixedSize(40,40)
@@ -947,17 +945,10 @@ class Ui_MainWindow(Helper):
                                                                 "background:green;\n")
                         self.buttonsOverView[(i, j)].setFixedWidth(20)
                         self.buttonsOverView[(i, j)].setAlignment(QtCore.Qt.AlignCenter)
-                        
-
-                        
-              #          if self.FLU[k-8] < (len(STYLEFLU)):
-              #              self.buttonsOverView[(i, j)].setStyleSheet(STYLEFLU[self.FLU[k-8]])
 
                     else:
                         self.overViewLayouts[k].addWidget(self.buttonsOverView[(i, j)], i, j,1,1)
-                    
-                    # CONNECT TO FUNCTION
-#                    self.buttonsOverView[(i, j)].clicked.connect(self.beamSafeButtons_clicked)
+
             self.groupBoxesOverview[k].setLayout(self.overViewLayouts[k])
 
         # FLU LINES ON OVERVIEW SCREEN
@@ -987,7 +978,6 @@ class Ui_MainWindow(Helper):
         self.overviewFluEstopAllBeamsList.append(self.OverviewLinkEstopAllBeamsLineVert)
 
         vertPositions = [i for i in range(8)]
-
 
         for position in vertPositions:
             self.OverviewLinkEstopAllBeamsLineHor = QtWidgets.QLabel(self.overviewWidget)
@@ -1565,7 +1555,7 @@ class Ui_MainWindow(Helper):
 
 
 ############### BEAM NAVIGATOR with navigation buttons to the 16 beams ##########
-        ## FLU lines created with FLU page and added to centralWidget
+        ## FLU lines are created with FLU page and added to centralWidget
 
         # vessel gemoetry top view (moved to central widget to not interfere with button grid):
         self.VesselTopView = QtWidgets.QLabel(self.centralWidget)
@@ -1617,10 +1607,6 @@ class Ui_MainWindow(Helper):
         self.vesselLayout = QtWidgets.QGridLayout()
         self.vesselWidget = QtWidgets.QWidget(self.centralWidget)
         self.vesselWidget.setGeometry(QtCore.QRect(HOR_RES-RIGHTBAR_RES, TOPBAR_RES+30, RIGHTBAR_RES, 8*30))
-
-
-
-
 
         # Nav buttons
         self.buttons = {}
@@ -1680,25 +1666,39 @@ class Ui_MainWindow(Helper):
 
         for position in positions:
             self.FluLineVert = QtWidgets.QLabel(self.centralWidget)
-            self.FluLineVert.setGeometry(QtCore.QRect(LINE_STARTING_X + HOR_RES - VESSEL_HOR + position[1] * (X_SPACER + HOR_LINE_LENGTH + LINE_WIDTH), LINE_STARTING_Y + TOPBAR_RES + position[0] * Y_SPACER, LINE_WIDTH, VERT_LINE_LENGTH))
+            self.FluLineVert.setGeometry(QtCore.QRect(LINE_STARTING_X + position[1] * (X_SPACER + HOR_LINE_LENGTH + LINE_WIDTH), LINE_STARTING_Y + position[0] * Y_SPACER, LINE_WIDTH, VERT_LINE_LENGTH))
             self.FluLineVert.setStyleSheet("background-color:#7AAFFF")
 
             self.FluLineHorUp = QtWidgets.QLabel(self.centralWidget)
-            self.FluLineHorUp.setGeometry(QtCore.QRect(LINE_STARTING_X + HOR_RES - VESSEL_HOR + LINE_WIDTH + position[1] * X_SPACER, LINE_STARTING_Y + TOPBAR_RES + position[0]* Y_SPACER, HOR_LINE_LENGTH, LINE_WIDTH))
+            self.FluLineHorUp.setGeometry(QtCore.QRect(LINE_STARTING_X + LINE_WIDTH + position[1] * X_SPACER, LINE_STARTING_Y + position[0]* Y_SPACER, HOR_LINE_LENGTH, LINE_WIDTH))
             self.FluLineHorUp.setStyleSheet("background-color:#7AAFFF")
 
             self.FluLineHorDwn = QtWidgets.QLabel(self.centralWidget)
-            self.FluLineHorDwn.setGeometry(QtCore.QRect(LINE_STARTING_X + HOR_RES - VESSEL_HOR + LINE_WIDTH + position[1] * X_SPACER, LINE_STARTING_Y + TOPBAR_RES + VERT_LINE_LENGTH - LINE_WIDTH + position[0]* Y_SPACER, HOR_LINE_LENGTH, LINE_WIDTH))
+            self.FluLineHorDwn.setGeometry(QtCore.QRect(LINE_STARTING_X + LINE_WIDTH + position[1] * X_SPACER, LINE_STARTING_Y + VERT_LINE_LENGTH - LINE_WIDTH + position[0]* Y_SPACER, HOR_LINE_LENGTH, LINE_WIDTH))
             self.FluLineHorDwn.setStyleSheet("background-color:#7AAFFF")
 
             self.vesselOneFluGroupLines.append([self.FluLineVert, self.FluLineHorUp, self.FluLineHorDwn])
 
             self.vesselFluLinesList.append(self.vesselOneFluGroupLines)
 
-        # add to the layout
+        # add to the layout Link E-Stop to all beams lines on top right navigation bar (vessel)
 
+        self.VesselLinkEstopAllBeamsLineVert = QtWidgets.QLabel(self.centralWidget)
+        self.VesselLinkEstopAllBeamsLineVert.setGeometry(QtCore.QRect(LINK_ESTOP_ALL_BEAMS_STARTING_X, LINK_ESTOP_ALL_BEAMS_STARTING_Y, LINE_WIDTH, LINK_ESTOP_ALL_BEAMS_VERT_LINE_LENGTH))
+        self.VesselLinkEstopAllBeamsLineVert.setStyleSheet("background-color:#7AAFFF")
+        self.vesselFluEstopAllBeamsList.append(self.VesselLinkEstopAllBeamsLineVert)
+
+        vertPositions = [i for i in range(8)]
+
+        for position in vertPositions:
+            self.VesselLinkEstopAllBeamsLineHor = QtWidgets.QLabel(self.centralWidget)
+            self.VesselLinkEstopAllBeamsLineHor.setGeometry(QtCore.QRect(LINK_ESTOP_ALL_BEAMS_STARTING_X - LINK_ESTOP_ALL_BEAMS_HOR_LINE_LENGTH/2, LINK_ESTOP_ALL_BEAMS_STARTING_Y + position * LINK_ESTOP_ALL_BEAMS_Y_SPACER, LINK_ESTOP_ALL_BEAMS_HOR_LINE_LENGTH, LINE_WIDTH))
+            self.VesselLinkEstopAllBeamsLineHor.setStyleSheet("background-color:#7AAFFF")
+            self.vesselFluEstopAllBeamsList.append(self.VesselLinkEstopAllBeamsLineHor)
+
+        # add to the layout
         self.vesselWidget.setLayout(self.vesselLayout)
-        
+
 ################################# 16 BEAM CHECK BUTTONS ########################      
         # Active flag buttons 
         self.beamCheckLayouts = []
@@ -1706,7 +1706,6 @@ class Ui_MainWindow(Helper):
         self.buttonsFLU = []
         
         N = NO_BEAMS/2 #len(labelTextActive)
-        
 
         self.beamCheckLayouts = QtWidgets.QGridLayout()
 

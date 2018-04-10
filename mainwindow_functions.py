@@ -2078,7 +2078,8 @@ class Helper(object):
         self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
         for line in self.overviewFluEstopAllBeamsList:
             line.show()
-
+        for line in self.vesselFluEstopAllBeamsList:
+            line.show()
 
     def disableLinkEstopAllBeamsButton_clicked(self):
         LINK_ESTOP_ALL_BEAMS = False
@@ -2086,6 +2087,8 @@ class Helper(object):
         self.enableLinkEstopAllBeamsButton.setStyleSheet(STYLEWRITE)
         self.disableLinkEstopAllBeamsButton.setStyleSheet(STYLEWHITE)
         for line in self.overviewFluEstopAllBeamsList:
+            line.hide()
+        for line in self.vesselFluEstopAllBeamsList:
             line.hide()
 
     def linkEstopAllBeamsColorsRefresh(self):
@@ -2098,6 +2101,12 @@ class Helper(object):
 
     def linkEstopAllBeamsLinesRefresh(self):
         for line in self.overviewFluEstopAllBeamsList:
+            if LINK_ESTOP_ALL_BEAMS:
+                line.show()
+            else:
+                line.hide()
+
+        for line in self.vesselFluEstopAllBeamsList:
             if LINK_ESTOP_ALL_BEAMS:
                 line.show()
             else:
