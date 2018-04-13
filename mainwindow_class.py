@@ -137,11 +137,15 @@ class Ui_MainWindow(Helper):
          self.overviewOneFluGroupLines = []
          self.overviewFluLinesList = []
 
-
          # Link E-Stop to All Beams functionality lists
 
          self.vesselFluEstopAllBeamsList = []
          self.overviewFluEstopAllBeamsList = []
+
+         # SIF Functionality - CLUGER
+
+         self.sifEnabledButtonsList = []
+         self.sifDisabledButtonsList = []
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -534,10 +538,373 @@ class Ui_MainWindow(Helper):
 
         # Title
         self.sifWidgetTitle = QtWidgets.QLabel(self.sifWidget)
-        self.sifWidgetTitle.setGeometry(QtCore.QRect(20, 20, 500, 50))
+        self.sifWidgetTitle.setGeometry(QtCore.QRect(20, 20, 550, 50))
         self.sifWidgetTitle.setText("Safety Instrumented Functions")
         self.sifWidgetTitle.setFont(self.fontTitle)
         self.sifWidgetTitle.setStyleSheet("color:#cccccc")
+
+        #Labels
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(260, 130, 100, 20))
+        self.sifWidgetLabel.setText("SENSOR VALUES")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(1250, 130, 100, 20))
+        self.sifWidgetLabel.setText("SENSOR VALUES")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(520, 130, 110, 20))
+        self.sifWidgetLabel.setText("ENABLE/DISABLE SIF")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(990, 130, 110, 20))
+        self.sifWidgetLabel.setText("ENABLE/DISABLE SIF")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(670, 130, 120, 20))
+        self.sifWidgetLabel.setText("SIF TRIGGERS E-STOP")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        self.sifWidgetLabel = QtWidgets.QLabel(self.sifWidget)
+        self.sifWidgetLabel.setGeometry(QtCore.QRect(830, 130, 120, 20))
+        self.sifWidgetLabel.setText("SIF TRIGGERS E-STOP")
+        self.sifWidgetLabel.setFont(self.fontSmall)
+        self.sifWidgetLabel.setStyleSheet("color:white")
+
+        #Making two boxes for starboard and port sides
+        self.groupBoxesSIF = []
+
+        for i in range(20):
+            if i < 10:
+                k = 0
+                ii = i
+                # kk = i + 10
+            else:
+                k = 1
+                ii = i - 10
+                # kk = i - 10
+
+
+            self.groupBox = QtWidgets.QGroupBox(self.sifWidget)
+            self.groupBoxesSIF.append(self.groupBox)
+            # self.groupBoxesSIF[i].setGeometry(QtCore.QRect(60 + i * (1600 - 60) / 2, 90,710,800))
+
+            if i == 0 or i == 10:
+                self.groupBoxesSIF[i].setGeometry(QtCore.QRect(60 + k * (1600 - 60) / 2, 150, (1600 - 180) / 2,40))
+
+            elif i == 9 or i == 19:
+                self.groupBoxesSIF[i].setGeometry(QtCore.QRect(60 + k * (1600 - 60) / 2, 190+((1000 - 10 * 20) / 10) * (8), (1600 - 180) / 2,40))
+
+            else:
+                self.groupBoxesSIF[i].setGeometry(QtCore.QRect(60 + k * (1600 - 60) / 2, 190+((1000 - 10 * 20) / 10) * (ii-1), (1600 - 180) / 2,(1000 - 10 * 20) / 10))
+
+            self.groupBoxesSIF[i].setFont(self.fontBig)
+
+            self.groupBoxesSIF[i].setStyleSheet("QGroupBox{\n"
+                                                "border: 1px solid white;\n"
+                                                "}")
+        # Within the two boxes
+
+        self.SIFLayouts = []
+        self.buttonsSIF = {}
+
+        self.SIFText = ["MCA", "Y-LOADED", "Y-UNLOADED"]
+
+        for k in range (20):
+            self.siflayout = QtWidgets.QGridLayout()
+            self.SIFLayouts.append(self.siflayout)
+
+            for i in range(1):
+                for j in range(8):
+
+                    self.buttonsSIF[(i, j)] = QtWidgets.QLabel()
+                    self.buttonsSIF[(i, j)].setStyleSheet("color:white;")
+                    self.buttonsSIF[(i, j)].setFont(self.fontSmall)
+
+                    if j == 1 and k in [0, 9]:
+                        self.buttonsSIF[(i, j)].setText("X-LIMIT")
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignRight)
+
+                    elif j==2 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 3 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(150, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+                    elif j==4 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("ENABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==5 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("DISABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==6 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(50, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 7 and k in [0,9]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+
+                    if j == 6 and k in [10,19]:
+                        self.buttonsSIF[(i, j)].setText("X-LIMIT")
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignLeft)
+
+                    elif j==5 and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 4 and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(150, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+                    elif j==3 and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("ENABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==2 and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("DISABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==1 and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(50, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j ==0  and k in [10,19]:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+            # #
+            # self.groupBoxesSIF[k].setLayout(self.SIFLayouts[k])
+
+            for i in range(3):
+                for j in range(8):
+
+                    self.buttonsSIF[(i, j)] = QtWidgets.QLabel()
+                    self.buttonsSIF[(i, j)].setStyleSheet("color:white;")
+                    self.buttonsSIF[(i, j)].setFont(self.fontSmall)
+
+                    if j==0 and k>0 and k<9:#) or (j==0 and k<9) :
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], 0, j, 3, 1)
+                        self.buttonsSIF[(i, j)].setText(beamIDtext[k+7])
+                        self.buttonsSIF[(i, j)].setFixedWidth(60)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignCenter)
+                        self.buttonsSIF[(i, j)].setFont(self.fontBiggest)
+
+                    elif j == 1 and k>0 and k<9:
+                        self.buttonsSIF[(i, j)].setText(self.SIFText[i])
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignRight)
+
+                    elif j==2 and k>0 and k<9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 3 and k > 0 and k < 9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(150, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+                    elif j==4 and k>0 and k<9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("ENABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                        # self.enableSIFButton = self.buttonsSIF
+                        # self.enableSIFButton.clicked.connect(lambda ignore, x=position: self.enableSIFButton_clicked(x))
+                        # self.sifEnabledButtonsList.append(self.enableFluButton)
+
+                    elif j==5 and k>0 and k<9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("DISABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==6 and k>0 and k<9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(50, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 7 and k > 0 and k < 9:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+
+                    elif j==7 and k>10 and k<19:#) or (j==0 and k<9) :
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], 0, j, 3, 1)
+                        self.buttonsSIF[(i, j)].setText(beamIDtext[k-11])
+                        self.buttonsSIF[(i, j)].setFixedWidth(60)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignCenter)
+                        self.buttonsSIF[(i, j)].setFont(self.fontBiggest)
+
+                    elif j == 6 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)].setText(self.SIFText[i])
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setAlignment(QtCore.Qt.AlignLeft)
+
+                    elif j==5 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+                    elif j == 4 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(150, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+                    elif j==3 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("ENABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==2 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(100, 20)
+                        self.buttonsSIF[(i, j)].setText("DISABLED")
+                        self.buttonsSIF[(i, j)].setStyleSheet(STYLEWRITE)
+
+                    elif j==1 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(50, 3)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 0px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+                    elif j == 0 and k>10 and k<19:
+                        self.buttonsSIF[(i, j)] = QtWidgets.QPushButton()#('row %d, col %d' % (i, j))
+                        self.SIFLayouts[k].addWidget(self.buttonsSIF[(i, j)], i, j, 1, 1)
+                        self.buttonsSIF[(i, j)].setFixedSize(15, 15)
+                        self.buttonsSIF[(i, j)].setStyleSheet("QPushButton{\n"
+                                                                        "color: black;\n"
+                                                                        "border: 0px solid white;\n"
+                                                                        "border-radius: 7px;\n"
+                                                                        "background:white;\n"
+                                                                        "}")
+
+            self.groupBoxesSIF[k].setLayout(self.SIFLayouts[k])
 
 ############################## 16 BEAM PAGES #############################
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralWidget)
